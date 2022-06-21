@@ -1,21 +1,11 @@
-﻿using System.Data.SQLite;
-using Dapper;
+﻿using Dapper;
+using Microsoft.Data.Sqlite;
 
-SQLiteConnectionStringBuilder connBuilder = new SQLiteConnectionStringBuilder
-{
-    DataSource = "file:///test_metadata:hellodc1/main.db?vfs=ceph",
-    DateTimeKind = DateTimeKind.Utc,
-    PageSize = 65536,
-    JournalMode = SQLiteJournalModeEnum.Wal
-};
-
-
-var connection = new SQLiteConnection(connBuilder.ToString(), true);
+var connection = new SqliteConnection("Data Source=file:///test_metadata:hellodc1/main.db?vfs=ceph");
 using (connection)
 {
     connection.LoadExtension("libcephsqlite.so");
     connection.Open();
-    connection.SetChunkSize(100);
     using (var trans = connection.BeginTransaction())
     {
         try
