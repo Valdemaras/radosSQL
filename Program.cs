@@ -1,4 +1,5 @@
-﻿using Dapper;
+﻿using System.Diagnostics;
+using Dapper;
 using Microsoft.Data.Sqlite;
 
 void loadCephSqlite()
@@ -32,7 +33,7 @@ using (connection)
         }
         catch (Exception ex)
         {
-            Console.WriteLine(ex.ToString());
+            //Console.WriteLine(ex.ToString());
             trans.Rollback();
         }
     }
@@ -47,14 +48,41 @@ using (connection)
     string val = "Properties\":{\"Method\":\"SET_PARAMETER\"";
     string sql = $"insert into MdMessage(UniqueId, Class, DID, SID, Timestamp, Data) values('{uid}', {classId}, {did}, {sid}, {ts}, '{val}')";
     Console.WriteLine(sql);
-    connection.Execute(sql);
+    
+    
+    Stopwatch sw = new Stopwatch();
+    sw.Start();
+    using (var trans = connection.BeginTransaction())
+    {
+        try
+        {
+            for (int i = 0; i < 1000; i++)
+            {
+                connection.Execute(sql);
+            }
+            
+            trans.Commit();
+        } catch (Exception e)
+        {
+            trans.Rollback();
+            Console.WriteLine(e.ToString());
+        }
+    }
+    sw.Stop();
+    Console.WriteLine("Insert Elapsed={0}",sw.Elapsed);
 
-
+    
     Console.WriteLine("Try select");
+    
+    sw.Start();
     IList<string> ids = (IList<string>) connection.Query<string>("Select UniqueId from MdMessage");
+    sw.Stop();
+    Console.WriteLine("Select Elapsed={0}",sw.Elapsed);
+    /*
     foreach (var id in ids)
     {
         Console.WriteLine($"Result {id}");
     }
+    */
 }
 
