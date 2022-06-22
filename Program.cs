@@ -11,7 +11,7 @@ void loadCephSqlite()
 }
 
 loadCephSqlite();
-var connection = new SqliteConnection("Data Source=file:///test_metadata:hellodc2/metadata.db?vfs=ceph");
+var connection = new SqliteConnection("Data Source=file:///test_metadata:hellodc3/metadata.db?vfs=ceph");
 using (connection)
 {
     connection.Open();
@@ -25,7 +25,7 @@ using (connection)
     {
         try
         {
-            connection.Execute("CREATE TABLE MdMessage (UniqueId TEXT, Class TINYINT, DID INT, SID INT, Timestamp REAL, Data TEXT)");
+            connection.Execute("CREATE TABLE MdMessage (UniqueId TEXT, Class TINYINT, DID INT, SID INT, Timestamp REAL, Data BLOB)");
             connection.Execute("CREATE TABLE MdMessageDb (UniqueId TEXT, Key TEXT, Value TEXT)");
             connection.Execute("CREATE INDEX idx_metadatadb ON MdMessage (DID, SID, Timestamp)");
             connection.Execute("CREATE INDEX idx_metadatatimestampdb ON MdMessage (Timestamp)");
@@ -45,7 +45,7 @@ using (connection)
     int did = 1;
     int sid = 1;
     double ts = 100;
-    string val = "Properties\":{\"Method\":\"SET_PARAMETER\"";
+    byte[] val = new byte[1024 * 1024];
     string sql = $"insert into MdMessage(UniqueId, Class, DID, SID, Timestamp, Data) values('{uid}', {classId}, {did}, {sid}, {ts}, '{val}')";
     Console.WriteLine(sql);
     
