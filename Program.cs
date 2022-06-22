@@ -39,26 +39,51 @@ using (connection)
     }
     
     Console.WriteLine("Tables created successfully");
-
-    string uid = Guid.NewGuid().ToString();
-    int classId = 0;
-    int did = 1;
-    int sid = 1;
-    double ts = 100;
-    byte[] val = new byte[1024 * 1024];
-    string sql = $"insert into MdMessage(UniqueId, Class, DID, SID, Timestamp, Data) values('{uid}', {classId}, {did}, {sid}, {ts}, '{val}')";
-    Console.WriteLine(sql);
-    
     
     Stopwatch sw = new Stopwatch();
     sw.Start();
     using (var trans = connection.BeginTransaction())
     {
+        
+        var command = connection.CreateCommand();
+        command.CommandText = @"INSERT INTO MdMessage VALUES ($uid, $classId, $did, $sid, $ts, $val)";
+
+        var parameter_uid = command.CreateParameter();
+        parameter_uid.ParameterName = "$uid";
+        command.Parameters.Add(parameter_uid);
+        
+        var parameter_class = command.CreateParameter();
+        parameter_class.ParameterName = "$classId";
+        command.Parameters.Add(parameter_class);
+        
+        var parameter_did = command.CreateParameter();
+        parameter_uid.ParameterName = "$did";
+        command.Parameters.Add(parameter_did);
+        
+        var parameter_sid = command.CreateParameter();
+        parameter_uid.ParameterName = "$sid";
+        command.Parameters.Add(parameter_sid);
+        
+        var parameter_ts = command.CreateParameter();
+        parameter_uid.ParameterName = "$ts";
+        command.Parameters.Add(parameter_ts);
+        
+        var parameter_val = command.CreateParameter();
+        parameter_uid.ParameterName = "$val";
+        command.Parameters.Add(parameter_val);
+        
         try
         {
+            byte[] data = new byte[1024 * 1024];
             for (int i = 0; i < 1000; i++)
             {
-                connection.Execute(sql);
+                parameter_uid.Value = Guid.NewGuid().ToString();
+                parameter_class.Value = 0;
+                parameter_did.Value = 1;
+                parameter_sid.Value = i + 1;
+                parameter_ts.Value = 100;
+                parameter_val.Value = data;
+                command.ExecuteNonQuery();
             }
             
             trans.Commit();
@@ -78,11 +103,6 @@ using (connection)
     IList<string> ids = (IList<string>) connection.Query<string>("Select UniqueId from MdMessage");
     sw.Stop();
     Console.WriteLine("Select Elapsed={0}",sw.Elapsed);
-    /*
-    foreach (var id in ids)
-    {
-        Console.WriteLine($"Result {id}");
-    }
-    */
+    Console.WriteLine($"Result {ids.Last()}");
 }
 
