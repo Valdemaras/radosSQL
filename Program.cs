@@ -33,12 +33,17 @@ using (connection)
     }
     
     Console.WriteLine("Tables created successfully");
+
+    string uid = Guid.NewGuid().ToString();
     connection.Execute(
-        "insert into MdMessage(UniqueId, Class, DID, SID, Timestamp, Data) values('id', 0, 1, 1, 100, '{\"Properties\":{\"Method\":\"SET_PARAMETER\"')");
+        "insert into MdMessage(UniqueId, Class, DID, SID, Timestamp, Data) values(uid, 0, 1, 1, 100, '{\"Properties\":{\"Method\":\"SET_PARAMETER\"')");
 
 
     Console.WriteLine("Try select");
-    var ts = connection.QuerySingle("select Timestamp from MdMessage").ToString();
-    Console.WriteLine("Result {ts}");
+    IList<string> ids = (IList<string>) connection.Query<string>("Select UniqueId from MdMessage");
+    foreach (var id in ids)
+    {
+        Console.WriteLine($"Result {id}");
+    }
 }
 
