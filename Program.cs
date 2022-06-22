@@ -57,19 +57,19 @@ using (connection)
         command.Parameters.Add(parameter_class);
         
         var parameter_did = command.CreateParameter();
-        parameter_uid.ParameterName = "$did";
+        parameter_did.ParameterName = "$did";
         command.Parameters.Add(parameter_did);
         
         var parameter_sid = command.CreateParameter();
-        parameter_uid.ParameterName = "$sid";
+        parameter_sid.ParameterName = "$sid";
         command.Parameters.Add(parameter_sid);
         
         var parameter_ts = command.CreateParameter();
-        parameter_uid.ParameterName = "$ts";
+        parameter_ts.ParameterName = "$ts";
         command.Parameters.Add(parameter_ts);
         
         var parameter_val = command.CreateParameter();
-        parameter_uid.ParameterName = "$val";
+        parameter_val.ParameterName = "$val";
         command.Parameters.Add(parameter_val);
         
         try
