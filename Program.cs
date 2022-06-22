@@ -10,11 +10,16 @@ void loadCephSqlite()
 }
 
 loadCephSqlite();
-var connection = new SqliteConnection("Data Source=file:///test_metadata:hellodc1/metadata.db?vfs=ceph");
+var connection = new SqliteConnection("Data Source=file:///test_metadata:hellodc2/metadata.db?vfs=ceph");
 using (connection)
 {
-
     connection.Open();
+    connection.Execute("PRAGMA page_size = 65536");
+    connection.Execute("PRAGMA cache_size = 4096");
+    connection.Execute("PRAGMA journal_mode = PERSIST");
+    connection.Execute("PRAGMA locking_mode = EXCLUSIVE");
+    connection.Execute("PRAGMA temp_store=memory");
+
     using (var trans = connection.BeginTransaction())
     {
         try
