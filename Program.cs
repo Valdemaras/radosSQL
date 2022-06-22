@@ -1,10 +1,9 @@
 ﻿using System.Data.SQLite;
 using Dapper;
-using Microsoft.Data.Sqlite;
 
 void loadCephSqlite()
 {
-    using var test = new SqliteConnection();
+    using var test = new SQLiteConnection("Data Source=:memory:");
     test.Open();
     test.LoadExtension("libcephsqlite.so");
     test.Close();
@@ -14,10 +13,11 @@ loadCephSqlite();
 SQLiteConnectionStringBuilder connBuilder = new SQLiteConnectionStringBuilder();
 
 connBuilder.DataSource = "file:///test_metadata:hellodc2/metadata.db?vfs=ceph";
+connBuilder.DateTimeKind = DateTimeKind.Utc;
 connBuilder.PageSize = 65536;
 connBuilder.CacheSize = 4096;
 connBuilder.JournalMode = SQLiteJournalModeEnum.Persist;
-var connection = new SqliteConnection(connBuilder.ToString());
+var connection = new SQLiteConnection(connBuilder.ToString());
 using (connection)
 {
 
