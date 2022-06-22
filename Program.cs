@@ -40,7 +40,7 @@ using (connection)
     int sid = 1;
     double ts = 100;
     string val = "Properties\":{\"Method\":\"SET_PARAMETER\"";
-    string sql = $"insert into MdMessage(UniqueId, Class, DID, SID, Timestamp, Data) values({uid}, {classId}, {did}, {sid}, {ts}, {val})";
+    string sql = $"insert into MdMessage(UniqueId, Class, DID, SID, Timestamp, Data) values('{uid}', {classId}, {did}, {sid}, {ts}, '{val}')";
     Console.WriteLine(sql);
     connection.Execute(sql);
 
