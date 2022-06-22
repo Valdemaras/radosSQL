@@ -11,7 +11,7 @@ void loadCephSqlite()
 }
 
 loadCephSqlite();
-var connection = new SqliteConnection("Data Source=file:///test_metadata/metadata.db?vfs=ceph");
+var connection = new SqliteConnection("Data Source=file:///test_metadata:/metadata.db?vfs=ceph");
 using (connection)
 {
     connection.Open();
