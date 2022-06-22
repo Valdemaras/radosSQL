@@ -35,8 +35,14 @@ using (connection)
     Console.WriteLine("Tables created successfully");
 
     string uid = Guid.NewGuid().ToString();
-    connection.Execute(
-        "insert into MdMessage(UniqueId, Class, DID, SID, Timestamp, Data) values(uid, 0, 1, 1, 100, '{\"Properties\":{\"Method\":\"SET_PARAMETER\"')");
+    int classId = 0;
+    int did = 1;
+    int sid = 1;
+    double ts = 100;
+    string val = "Properties\":{\"Method\":\"SET_PARAMETER\"";
+    string sql = $"insert into MdMessage(UniqueId, Class, DID, SID, Timestamp, Data) values({uid}, {classId}, {did}, {sid}, {ts}, {val})";
+    Console.WriteLine(sql);
+    connection.Execute(sql);
 
 
     Console.WriteLine("Try select");
