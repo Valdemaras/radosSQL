@@ -14,7 +14,6 @@ loadCephSqlite();
 SQLiteConnectionStringBuilder connBuilder = new SQLiteConnectionStringBuilder();
 
 connBuilder.DataSource = "file:///test_metadata:hellodc2/metadata.db?vfs=ceph";
-connBuilder.DateTimeKind = DateTimeKind.Utc;
 connBuilder.PageSize = 65536;
 connBuilder.CacheSize = 4096;
 connBuilder.JournalMode = SQLiteJournalModeEnum.Persist;
