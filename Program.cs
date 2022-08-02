@@ -4,7 +4,7 @@ using Microsoft.Data.Sqlite;
 
 class Program
 {
-    void loadCephSqlite()
+    static void loadCephSqlite()
     {
         using var test = new SqliteConnection();
         test.Open();
@@ -17,10 +17,10 @@ class Program
         bool isReadOnly = Boolean.Parse(args[0]);
         string dbName = args[1];
 
-        //loadCephSqlite();
-        //var connection = new SqliteConnection("Data Source=file:///test_metadata:/metadata.db?vfs=ceph");
+        loadCephSqlite();
+        var connection = new SqliteConnection($"Data Source=file:///test_metadata:/{dbName}?vfs=ceph");
 
-        var connection = new SqliteConnection($"Data Source={dbName}");
+        //var connection = new SqliteConnection($"Data Source={dbName}");
         Stopwatch sw = new Stopwatch();
         if (isReadOnly == false)
         {
