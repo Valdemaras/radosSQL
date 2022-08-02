@@ -16,9 +16,15 @@ class Program
     {
         bool isReadOnly = Boolean.Parse(args[0]);
         string dbName = args[1];
+        string mode = "ReadWriteCreate";
+        if (isReadOnly)
+        {
+            mode = "ReadOnly";
+        }
 
         loadCephSqlite();
-        var connection = new SqliteConnection($"Data Source=file:///test_metadata:/{dbName}?vfs=ceph");
+        var connection = new SqliteConnection($"Data Source=file:///test_metadata:/{dbName}?vfs=ceph;mode={mode}");
+        connection.Open();
 
         //var connection = new SqliteConnection($"Data Source={dbName}");
         Stopwatch sw = new Stopwatch();
@@ -26,7 +32,6 @@ class Program
         {
             using (connection)
             {
-                connection.Open();
                 connection.Execute("PRAGMA page_size = 65536");
                 connection.Execute("PRAGMA cache_size = 4096");
                 connection.Execute("PRAGMA journal_mode = PERSIST");
