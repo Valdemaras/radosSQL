@@ -117,6 +117,7 @@ class Program
         
         
             connection.Close();
+            connection.Dispose();
             Console.WriteLine("Many insert has finished!");
             Thread.Sleep(5000);
         }
@@ -138,6 +139,7 @@ class Program
         Console.WriteLine("Select Elapsed={0}", sw.Elapsed);
         Console.WriteLine($"Result {ids.Last()}");
         connection.Close();
+        connection.Dispose();
         Thread.Sleep(5000);
     }
 }
