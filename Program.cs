@@ -35,8 +35,6 @@ class Program
         sw.Stop();
         Console.WriteLine("SQL connection open time ={0}", sw.Elapsed);
         
-        
-
         if (isReadOnly == false)
         {
             using (var trans = connection.BeginTransaction())
@@ -118,12 +116,22 @@ class Program
             Console.WriteLine("Insert Elapsed={0}", sw.Elapsed);
         
         
-            //connection.Close();
+            connection.Close();
             Console.WriteLine("Many insert has finished!");
             Thread.Sleep(5000);
         }
 
         Console.WriteLine("Try select");
+        
+        sw.Start();
+        connection.Open();
+        connection.Execute("PRAGMA page_size = 65536");
+        connection.Execute("PRAGMA cache_size = 4096");
+        connection.Execute("PRAGMA journal_mode = PERSIST");
+        connection.Execute("PRAGMA locking_mode = EXCLUSIVE");
+        connection.Execute("PRAGMA temp_store=memory");
+        sw.Stop();
+        Console.WriteLine("SQL connection open time ={0}", sw.Elapsed);
         
         sw.Start();
         IList<string> ids = (IList<string>) connection.Query<string>("Select UniqueId from MdMessage");
