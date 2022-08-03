@@ -122,8 +122,7 @@ class Program
         }
 
         Console.WriteLine("Try select");
-        
-        sw.Start();
+        sw.Restart();
         connection.Open();
         connection.Execute("PRAGMA page_size = 65536");
         connection.Execute("PRAGMA cache_size = 4096");
@@ -139,6 +138,7 @@ class Program
         Console.WriteLine("Select Elapsed={0}", sw.Elapsed);
         Console.WriteLine($"Result {ids.Last()}");
         connection.Close();
+        Thread.Sleep(5000);
     }
 }
 
