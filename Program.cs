@@ -115,6 +115,9 @@ class Program
                 sw.Stop();
                 Console.WriteLine("Insert Elapsed={0}", sw.Elapsed);
             }
+            
+            Console.WriteLine("Many insert has finished!");
+            Thread.Sleep(5000);
         }
 
         Console.WriteLine("Try select");
