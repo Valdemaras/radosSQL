@@ -16,6 +16,7 @@ class Program
     {
         bool isReadOnly = Boolean.Parse(args[0]);
         string dbName = args[1];
+        int count = int.Parse(args[2]);
         string mode = "ReadWriteCreate";
         if (isReadOnly)
         {
@@ -121,7 +122,7 @@ class Program
 
         Console.WriteLine("Try select");
         sw.Restart();
-        IList<string> ids = (IList<string>) connection.Query<string>("Select UniqueId from MdMessage");
+        IList<string> ids = (IList<string>) connection.Query<string>($"Select Timestamp from Metadata limit {count}");
         sw.Stop();
         Console.WriteLine("Select Elapsed={0}", sw.Elapsed);
         Console.WriteLine($"Result {ids.Last()}");
