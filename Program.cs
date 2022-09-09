@@ -60,7 +60,7 @@ class Program
             sw.Start();
             using (var trans = connection.BeginTransaction())
             {
-
+                Console.WriteLine("Start Inserting");
                 var command = connection.CreateCommand();
                 command.CommandText = @"INSERT INTO MdMessage VALUES ($uid, $classId, $did, $sid, $ts, $val)";
 
