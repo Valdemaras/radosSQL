@@ -32,7 +32,7 @@ class Program
         connection.Execute("PRAGMA cache_size = 4096");
         connection.Execute("PRAGMA journal_mode = PERSIST");
         //connection.Execute("PRAGMA locking_mode = EXCLUSIVE");
-        connection.Execute("PRAGMA temp_store=memory");
+        //connection.Execute("PRAGMA temp_store=memory");
         sw.Stop();
         Console.WriteLine("SQL connection open time ={0}", sw.Elapsed);
         
