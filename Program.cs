@@ -61,18 +61,18 @@ class Program
             {
                 Console.WriteLine("Start Inserting");
                 var command = connection.CreateCommand();
-                command.CommandText = @"INSERT INTO Metadata VALUES ($sid, $ts, $val)";
+                command.CommandText = @"INSERT INTO Metadata VALUES ($sid, $Timestamp, $Data)";
 
                 var parameter_sid = command.CreateParameter();
                 parameter_sid.ParameterName = "$sid";
                 command.Parameters.Add(parameter_sid);
 
                 var parameter_ts = command.CreateParameter();
-                parameter_ts.ParameterName = "$ts";
+                parameter_ts.ParameterName = "$Timestamp";
                 command.Parameters.Add(parameter_ts);
 
                 var parameter_val = command.CreateParameter();
-                parameter_val.ParameterName = "$val";
+                parameter_val.ParameterName = "$Data";
                 command.Parameters.Add(parameter_val);
 
                 try
