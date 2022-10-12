@@ -61,19 +61,7 @@ class Program
             {
                 Console.WriteLine("Start Inserting");
                 var command = connection.CreateCommand();
-                command.CommandText = @"INSERT INTO Metadata VALUES ($uid, $classId, $did, $sid, $ts, $val)";
-
-                var parameter_uid = command.CreateParameter();
-                parameter_uid.ParameterName = "$uid";
-                command.Parameters.Add(parameter_uid);
-
-                var parameter_class = command.CreateParameter();
-                parameter_class.ParameterName = "$classId";
-                command.Parameters.Add(parameter_class);
-
-                var parameter_did = command.CreateParameter();
-                parameter_did.ParameterName = "$did";
-                command.Parameters.Add(parameter_did);
+                command.CommandText = @"INSERT INTO Metadata VALUES ($sid, $ts, $val)";
 
                 var parameter_sid = command.CreateParameter();
                 parameter_sid.ParameterName = "$sid";
@@ -92,9 +80,6 @@ class Program
                     byte[] data = new byte[1024];
                     for (int i = 0; i < 1000; i++)
                     {
-                        parameter_uid.Value = Guid.NewGuid().ToString();
-                        parameter_class.Value = 0;
-                        parameter_did.Value = 1;
                         parameter_sid.Value = i + 1;
                         parameter_ts.Value = 100;
                         parameter_val.Value = data;
