@@ -42,11 +42,9 @@ class Program
             {
                 try
                 {
-                    connection.Execute(
-                        "CREATE TABLE MdMessage (UniqueId TEXT, Class TINYINT, DID INT, SID INT, Timestamp REAL, Data BLOB)");
-                    connection.Execute("CREATE TABLE Metadata (UniqueId TEXT, Key TEXT, Value TEXT)");
-                    connection.Execute("CREATE INDEX idx_metadatadb ON MdMessage (DID, SID, Timestamp)");
-                    connection.Execute("CREATE INDEX idx_metadatatimestampdb ON MdMessage (Timestamp)");
+                    connection.Execute($"CREATE TABLE Metadata (SID INT, Timestamp REAL, Data BLOB);");
+                    connection.Execute($"CREATE INDEX idx_metadatadb ON Metadata (SID, Timestamp)");
+                    connection.Execute($"CREATE INDEX idx_metadatatimestampdb ON Metadata (Timestamp)");
                     trans.Commit();
                 }
                 catch (Exception ex)
