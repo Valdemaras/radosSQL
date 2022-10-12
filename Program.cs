@@ -32,7 +32,7 @@ class Program
         connection.Execute("PRAGMA cache_size = 4096");
         connection.Execute("PRAGMA journal_mode = PERSIST");
         //connection.Execute("PRAGMA locking_mode = EXCLUSIVE");
-        //connection.Execute("PRAGMA temp_store=memory");
+        connection.Execute("PRAGMA temp_store=memory");
         sw.Stop();
         Console.WriteLine("SQL connection open time ={0}", sw.Elapsed);
         
@@ -44,7 +44,7 @@ class Program
                 {
                     connection.Execute(
                         "CREATE TABLE MdMessage (UniqueId TEXT, Class TINYINT, DID INT, SID INT, Timestamp REAL, Data BLOB)");
-                    connection.Execute("CREATE TABLE MdMessageDb (UniqueId TEXT, Key TEXT, Value TEXT)");
+                    connection.Execute("CREATE TABLE Metadata (UniqueId TEXT, Key TEXT, Value TEXT)");
                     connection.Execute("CREATE INDEX idx_metadatadb ON MdMessage (DID, SID, Timestamp)");
                     connection.Execute("CREATE INDEX idx_metadatatimestampdb ON MdMessage (Timestamp)");
                     trans.Commit();
@@ -63,7 +63,7 @@ class Program
             {
                 Console.WriteLine("Start Inserting");
                 var command = connection.CreateCommand();
-                command.CommandText = @"INSERT INTO MdMessage VALUES ($uid, $classId, $did, $sid, $ts, $val)";
+                command.CommandText = @"INSERT INTO Metadata VALUES ($uid, $classId, $did, $sid, $ts, $val)";
 
                 var parameter_uid = command.CreateParameter();
                 parameter_uid.ParameterName = "$uid";
